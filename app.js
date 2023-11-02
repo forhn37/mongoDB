@@ -1,3 +1,4 @@
+const express = require('express')
 const mongoose = require('mongoose'); //commonJS방식
 // import mongoose from 'mongoose'; //ESM방식
 // 둘다 가능
@@ -11,9 +12,3 @@ mongoose.connect('mongodb://localhost/your-database-name', {
   // 
   useUnifiedTopology: true
 })
-.then(()=> {
-  console.log('MongoDB 연결 성공');
-})
-.catch((err)=> {
-  console.error('MongoDB 연결 실패:', err)
-});
