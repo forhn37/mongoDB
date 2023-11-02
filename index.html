@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>간단한 MongoDB 앱</title>
+</head>
+<body>
+  <h1>데이터 저장하기</h1>
+  <form id="data-form">
+    <input type="text" id="message" placeholder="메시지 입력">
+    <button type="submit">저장</button>
+  </form>
+  <div id="message-list">
+    <!-- 저장된 메시지 목록이 여기에 표시됩니다. -->
+  </div>
+
+  <script>
+    const dataForm = document.getElementById('data-form');
+    const messageInput = document.getElementById('message');
+    const messageList = document.getElementById('message-list');
+
+    // 폼 제출 이벤트 핸들러
+    dataForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      // 입력된 메시지 가져오기
+      const message = messageInput.value;
+
+      // 서버로 POST 요청 보내기
+      const response = await fetch('/addData', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // 저장된 데이터를 목록에 추가
+        const listItem = document.createElement('li');
+        listItem.textContent = data.message;
+        messageList.appendChild(listItem);
+        messageInput.value = '';
+      } else {
+        console.error('데이터 저장 중 오류:', response.statusText);
+      }
+    });
+  </script>
+</body>
+</html>

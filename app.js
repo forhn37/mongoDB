@@ -42,3 +42,17 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
+// POST 요청 처리
+app.post('/addData', async (req, res) => {
+  try {
+    // POST 요청에서 클라이언트로부터 받은 데이터를 MongoDB에 저장
+    const newData = new Data({ message: req.body.message });
+    const savedData = await newData.save();
+    res.json(savedData);
+  } catch (error) {
+    res.status(500).json({ error: '데이터를 저장하는 중에 오류가 발생했습니다.' });
+  }
+});
+app.listen(PORT, () => {
+  console.log(`서버 구동 중: http://localhost:${PORT}`);
+});
